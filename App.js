@@ -1,21 +1,55 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, FlatList, Pressable } from "react-native"
 
 export default function App() {
+
+  const [listData, setListData] = useState([
+      "Compras en el super mercado",
+      "Entrega de productos en centro comercial",
+      "Compra de materiales para reparaciones en la casa",
+      "Recoger a los niños en el colegio",
+      "Terminar trabajo de publicidad",
+      "Reunión con clientes",
+      "Llevar vehículo a mantenimiento"
+  ])
+
+  const removeItem = value => {
+    const newData = listData.filter((item) => item != value)
+    setListData(newData)
+  }
+
+  const ItemComponent = ({ item }) => <Pressable
+    style={styles.card}
+    onPress={() => removeItem(item)}
+  >
+    <Text style={styles.text}>{item}</Text>
+  </Pressable>
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <FlatList
+      data={listData}
+      contentContainerStyle={styles.container}
+      keyExtractor={(item) => item}
+      renderItem={ItemComponent}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#3d3d3d',
+    alignItems: 'stretch',
+    paddingVertical: 20,
+    height: '100%'
+  },
+  card: {
+    backgroundColor: 'white',
+    marginHorizontal: 10,
+    marginVertical: 5,
+    borderRadius: 3,
+  },
+  text: {
+    fontSize: 20,
+    margin: 30
   },
 });
